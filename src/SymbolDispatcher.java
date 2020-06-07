@@ -79,10 +79,12 @@ public class SymbolDispatcher {
                 if ((romanSymbolsCheck(firstValue) == 0) && (this.roman)) {
                     this.compatible = false;
                     System.out.println("Несовместимые типы чисел a= " + firstValue + " c b= " + secondValue);
+                    System.exit(0);
                 }
                 if ((romanSymbolsCheck(secondValue) == 0) && (this.roman)) {
                     this.compatible = false;
                     System.out.println("Несовместимые типы чисел b= " + secondValue + " с a= " + firstValue);
+                    System.exit(0);
                 }
                 if ((romanSymbolsCheck(secondValue) != 0) && (this.roman)) {
                     this.b = new ArabicToRoman().romeToArab(secondValue);
@@ -100,11 +102,25 @@ public class SymbolDispatcher {
 
     public float calc(){
         if (!this.compatible) return 0;
-        if (this.sum) return this.a + this.b;
-        if (this.difference) return this.a - this.b;
-        if (this.division) return this.a / this.b;
-        if (this.multiply) return this.a * this.b;
+        if ((this.sum) && (!this.roman)) return this.a + this.b;
+        if ((this.difference) && (!this.roman)) return this.a - this.b;
+        if ((this.division) && (!this.roman)) return this.a / this.b;
+        if ((this.multiply) && (!this.roman)) return this.a * this.b;
+
         return 0;
+    }
+
+    public String romanCalc(){
+
+        int calcResult = 0;
+
+        if (!this.compatible) return null;
+        if ((this.sum) && (this.roman)) calcResult = (int) (this.a + this.b);
+        if ((this.difference) && (this.roman)) calcResult = (int) (this.a - this.b);
+        if ((this.division) && (this.roman)) calcResult = (int) (this.a / this.b);
+        if ((this.multiply) && (this.roman)) calcResult = (int) (this.a * this.b);
+
+        return new RomanToArabic().arabicToRoman(calcResult);
     }
 
     private boolean buildCounter(char value){
@@ -191,8 +207,11 @@ public class SymbolDispatcher {
         }
     }
 
+    public boolean isRoman() {
+        return roman;
+    }
 
-
-
-
+    public boolean isCompatible() {
+        return compatible;
+    }
 }
